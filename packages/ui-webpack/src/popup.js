@@ -43,7 +43,7 @@ export default (discovery, view) => {
             },
           },
         ],
-        onFirstUpdate({ instance }) {
+        onFirstUpdate() {
           document.onmousemove = ({ pageX, pageY }) => {
             mouse = { pageX, pageY };
             popper.update();

@@ -2,7 +2,7 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
 const webpack = require('webpack');
-const StatoscopeWebpackPlugin = require('./');
+const StatoscopeWebpackPlugin = require('../plugin-webpack');
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 

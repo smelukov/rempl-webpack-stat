@@ -1,9 +1,8 @@
 {
   "name": "@statoscope/ui-webpack",
-  "version": "4.1.1",
-  "description": "Webpack plugin and UI for analyzing webpack bundle with Statoscope",
-  "browser": "./dist/main.js",
-  "main": "./plugin/index.js",
+  "version": "5.0.0",
+  "description": "Statoscope UI for analyzing webpack bundle",
+  "main": "./dist/main.js",
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
@@ -24,7 +23,7 @@
   "devDependencies": {
     "@carrotsearch/foamtree": "3.5.0",
     "@discoveryjs/discovery": "^1.0.0-beta.60",
-    "@popperjs/core": "^2.9.1",
+    "@popperjs/core": "^2.9.2",
     "@wdxlab/events": "^1.1.0",
     "babel-loader": "^8.2.2",
     "clsx": "^1.1.1",
@@ -35,13 +34,11 @@
     "path-browserify": "^1.0.1",
     "schema-utils": "^3.0.0",
     "style-loader": "^2.0.0",
-    "webpack": "^5.27.2",
-    "webpack-cli": "^4.5.0",
+    "webpack": "^5.35.1",
+    "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "@discoveryjs/json-ext": "^0.5.2",
-    "open": "^8.0.4"
   }
 }

@@ -1,0 +1,22 @@
+{
+  "name": "@statoscope/format-spec",
+  "version": "0.1.0",
+  "description": "Statoscope universal format specification",
+  "types": "./src/index.d.ts",
+  "scripts": {
+  },
+  "repository": "https://github.com/statoscope/statoscope/",
+  "author": {
+    "name": "Sergey Melyukov",
+    "url": "https://twitter.com/smelukov"
+  },
+  "files": [
+    "src/*"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/statoscope/statoscope/",
+  "devDependencies": {
+  },
+  "dependencies": {
+  }
+}
