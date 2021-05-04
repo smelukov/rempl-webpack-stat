@@ -1,7 +1,9 @@
 import md5 from 'md5';
 import validateStats from '../../validate';
-import moduleResource, { moduleReasonResource, nodeModule } from './module';
-import { makeEntityResolver } from './entity';
+import { module as moduleHelpers } from '@statoscope/model-webpack';
+import { makeEntityResolver } from '@statoscope/model-webpack';
+
+const { moduleResource, moduleReasonResource, nodeModule } = moduleHelpers;
 
 function prepareCompilation(compilation, parent) {
   return {
@@ -118,9 +120,7 @@ function prepareModule(module, { resolveChunk, resolveModule }) {
   }
 
   if (module.reasons) {
-    module.reasons = module.reasons.filter(
-      (r) => r.moduleName !== module.name
-    );
+    module.reasons = module.reasons.filter((r) => r.moduleName !== module.name);
     module.reasons.forEach((r) => (r.resolvedModule = resolveModule(r.moduleName)));
   } else {
     module.reasons = [];
@@ -142,9 +142,7 @@ function prepareModules(compilation, resolvers) {
 function prepareChunks(compilation, { resolveModule, resolveAsset, resolveChunk }) {
   for (const chunk of compilation.chunks) {
     if (chunk.modules) {
-      chunk.modules = chunk.modules
-        .map((m) => resolveModule(m.name))
-        .filter(Boolean);
+      chunk.modules = chunk.modules.map((m) => resolveModule(m.name)).filter(Boolean);
     } else {
       chunk.modules = [];
     }
@@ -247,11 +245,7 @@ function extractPackages(compilation, { resolvePackage }) {
 
       const instanceReasonsKeys = new Set(
         instance.reasons.map((reason) => {
-          return buildReasonKey(
-            reason.type,
-            reason.data.moduleName,
-            reason.data.loc
-          );
+          return buildReasonKey(reason.type, reason.data.moduleName, reason.data.loc);
         })
       );
 

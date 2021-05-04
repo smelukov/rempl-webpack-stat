@@ -35,7 +35,7 @@ function makePreWriter(preSource) {
   <head>
       <meta charset="UTF-8">
       <script>
-        ${fs.readFileSync(require.resolve('../dist/main.js'), 'utf8')}
+        ${fs.readFileSync(require.resolve('@statoscope/ui-webpack'), 'utf8')}
       </script>
 `);
     await pipeFrom(preSource);

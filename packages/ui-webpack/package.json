@@ -24,6 +24,7 @@
     "@carrotsearch/foamtree": "3.5.0",
     "@discoveryjs/discovery": "^1.0.0-beta.60",
     "@popperjs/core": "^2.9.2",
+    "@statoscope/model-webpack": "5.0.0",
     "@wdxlab/events": "^1.1.0",
     "babel-loader": "^8.2.2",
     "clsx": "^1.1.1",

@@ -31,7 +31,7 @@ export function moduleNameResource(name) {
   }
 }
 
-export default function moduleResource(module) {
+export function moduleResource(module) {
   return moduleNameResource(module && module.name);
 }
 

@@ -1,0 +1,20 @@
+{
+  "name": "@statoscope/model-webpack",
+  "version": "5.0.0",
+  "description": "Statoscope plugin for webpack",
+  "main": "./src/index.js",
+  "scripts": {
+  },
+  "repository": "https://github.com/statoscope/statoscope.git",
+  "author": {
+    "name": "Sergey Melyukov",
+    "url": "https://twitter.com/smelukov"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/statoscope/statoscope.git",
+  "dependencies": {
+    "@statoscope/ui-webpack": "^5.0.0",
+    "@discoveryjs/json-ext": "^0.5.2",
+    "open": "^8.0.4"
+  }
+}

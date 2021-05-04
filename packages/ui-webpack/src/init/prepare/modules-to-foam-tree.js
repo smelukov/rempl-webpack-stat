@@ -1,4 +1,4 @@
-import moduleResource from './module';
+import { module as moduleHelpers } from '@statoscope/model-webpack';
 
 function makeNode(data, size, path) {
   return {
@@ -11,7 +11,7 @@ function makeNode(data, size, path) {
 }
 
 function handleModule(root, module) {
-  const resource = moduleResource(module);
+  const resource = moduleHelpers.moduleResource(module);
 
   if (!resource) {
     return;

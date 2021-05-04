@@ -15,10 +15,10 @@ function warnCache(entities, getId, cache) {
   }
 }
 
-export function makeEntityResolver(entities, getId) {
+export default function make(entities, getId) {
   const cache = new Map();
 
-  warnCache(entities, getId, cache)
+  warnCache(entities, getId, cache);
 
   return (id) => {
     const cached = cache.get(id);

@@ -1,4 +1,5 @@
 import path from 'path';
+import { joraHelpers } from '@statoscope/model-webpack';
 
 import settings, {
   SETTING_HIDE_CHILD_COMPILATIONS,
@@ -9,10 +10,8 @@ import settings, {
   SETTING_LIST_ITEMS_LIMIT_DEFAULT,
 } from '../../settings';
 import modulesToFoamTree from './modules-to-foam-tree';
-import module, { moduleNameResource, moduleReasonResource, nodeModule } from './module';
 import { colorFromH, colorMap, fileTypeMap, generateColor } from './colors';
 import { pluralEng, pluralRus } from './plural';
-import { makeEntityResolver } from './entity';
 import normalize from './normalize';
 
 export default (discovery) => (rawData, { addQueryHelpers }) => {
@@ -43,12 +42,8 @@ export default (discovery) => (rawData, { addQueryHelpers }) => {
     files.push(file);
   }
 
-  const resolveCompilationFromMap = makeEntityResolver(
-    fileCompilationMap,
-    (item) => item?.compilation?.data?.hash
-  );
-
   addQueryHelpers({
+    ...joraHelpers(fileCompilationMap),
     encodeURIComponent: encodeURIComponent,
     decodeURIComponent: decodeURIComponent,
     stringify: JSON.stringify,
@@ -96,7 +91,7 @@ export default (discovery) => (rawData, { addQueryHelpers }) => {
       return (a / b - 1) * 100;
     },
     toFixed(value, digits = 2) {
-      return value.toFixed(2);
+      return value.toFixed(digits);
     },
     color: (value) => (colorMap[value] ? colorMap[value].color : generateColor(value)),
     fileExt: (value = '') => {
@@ -106,48 +101,7 @@ export default (discovery) => (rawData, { addQueryHelpers }) => {
       const extname = path.extname(value);
       return fileTypeMap[extname] || extname;
     },
-    moduleSize(module) {
-      // todo gzip
-      return module.size;
-    },
-    chunkName(chunk) {
-      return `${chunk.names[0] ? chunk.names.join(', ') : chunk.id}${
-        chunk.reason ? ' [' + chunk.reason + ']' : ''
-      }`;
-    },
-    getTotalFilesSize: (value) =>
-      (value.files || []).reduce((sum, file) => sum + file.size, 0),
     toMatchRegexp: (value) => new RegExp(`(${value})`),
-    resolveChunk(id, compilationHash) {
-      return resolveCompilationFromMap(
-        compilationHash
-      )?.compilation?.resolvers.resolveChunk(id);
-    },
-    resolveAsset(id, compilationHash) {
-      return resolveCompilationFromMap(
-        compilationHash
-      )?.compilation?.resolvers.resolveAsset(id);
-    },
-    resolveModule(id, compilationHash) {
-      return resolveCompilationFromMap(
-        compilationHash
-      )?.compilation?.resolvers.resolveModule(id);
-    },
-    resolvePackage(id, compilationHash) {
-      return resolveCompilationFromMap(
-        compilationHash
-      )?.compilation?.resolvers.resolvePackage(id);
-    },
-    resolveStat(id) {
-      const resolved = resolveCompilationFromMap(id);
-      return (
-        resolved && { file: resolved?.file, compilation: resolved?.compilation?.data }
-      );
-    },
-    moduleResource: module,
-    moduleReasonResource,
-    moduleNameResource,
-    nodeModule,
     colorFromH,
     plural(value, words) {
       return pluralEng.plural(value, words);
@@ -196,23 +150,6 @@ export default (discovery) => (rawData, { addQueryHelpers }) => {
       return settings
         .get(SETTING_LIST_ITEMS_LIMIT, SETTING_LIST_ITEMS_LIMIT_DEFAULT)
         .get();
-    },
-    statName(stat) {
-      if (!stat) {
-        return 'unknown';
-      }
-
-      const hash = stat.compilation.hash.slice(0, 7);
-      const compilationName =
-        stat.compilation.name && moduleNameResource(stat.compilation.name);
-
-      if (stat.file.name) {
-        return `${stat.file.name} (${compilationName || hash})`;
-      } else if (compilationName) {
-        return `${compilationName} (${hash})`;
-      }
-
-      return hash;
     },
   });
 
