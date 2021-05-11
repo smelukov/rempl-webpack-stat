@@ -1,5 +1,5 @@
 import path from 'path';
-import { joraHelpers } from '@statoscope/model-webpack';
+import { joraHelpers, normalize } from '@statoscope/model-webpack';
 
 import settings, {
   SETTING_HIDE_CHILD_COMPILATIONS,
@@ -12,38 +12,12 @@ import settings, {
 import modulesToFoamTree from './modules-to-foam-tree';
 import { colorFromH, colorMap, fileTypeMap, generateColor } from './colors';
 import { pluralEng, pluralRus } from './plural';
-import normalize from './normalize';
 
-export default (discovery) => (rawData, { addQueryHelpers }) => {
-  const fileCompilationMap = new Map();
-  const files = [];
-
-  if (!Array.isArray(rawData)) {
-    rawData = [rawData];
-  }
-
-  for (const rawFile of rawData) {
-    const fileData = normalize(rawFile);
-    const file = {
-      name: fileData.name,
-      version: fileData.version,
-      validation: fileData.validation,
-      compilations: [],
-    };
-
-    for (const compilation of fileData.compilations) {
-      fileCompilationMap.set(compilation.data.hash, {
-        file,
-        compilation,
-      });
-      file.compilations.push(compilation.data);
-    }
-
-    files.push(file);
-  }
+export default () => (rawData, { addQueryHelpers }) => {
+  const { files, compilationMap } = normalize(rawData);
 
   addQueryHelpers({
-    ...joraHelpers(fileCompilationMap),
+    ...joraHelpers(compilationMap),
     encodeURIComponent: encodeURIComponent,
     decodeURIComponent: decodeURIComponent,
     stringify: JSON.stringify,

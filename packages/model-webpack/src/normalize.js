@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import validateStats from '../../validate';
+import validateStats from './validate';
 import { module as moduleHelpers } from '@statoscope/model-webpack';
 import { makeEntityResolver } from '@statoscope/model-webpack';
 
@@ -22,7 +22,38 @@ function prepareCompilation(compilation, parent) {
   };
 }
 
-export default function normalize(statObject) {
+export default function normalize(rawData) {
+  const compilationMap = new Map();
+  const files = [];
+
+  if (!Array.isArray(rawData)) {
+    rawData = [rawData];
+  }
+
+  for (const rawFile of rawData) {
+    const fileData = handleStatObject(rawFile);
+    const file = {
+      name: fileData.name,
+      version: fileData.version,
+      validation: fileData.validation,
+      compilations: [],
+    };
+
+    for (const compilation of fileData.compilations) {
+      compilationMap.set(compilation.data.hash, {
+        file,
+        compilation,
+      });
+      file.compilations.push(compilation.data);
+    }
+
+    files.push(file);
+  }
+
+  return { files, compilationMap };
+}
+
+export function handleStatObject(statObject) {
   const file = {
     name: statObject.name,
     version: statObject.data.version,

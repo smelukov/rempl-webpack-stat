@@ -6,9 +6,9 @@ import {
 } from './module';
 import makeEntityResolver from './entity-resolver';
 
-export default function (fileCompilationMap) {
+export default function (compilationMap) {
   const resolveCompilation = makeEntityResolver(
-    fileCompilationMap,
+    compilationMap,
     (item) => item?.compilation?.data?.hash
   );
 
